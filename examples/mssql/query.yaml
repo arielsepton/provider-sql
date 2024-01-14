@@ -1,0 +1,13 @@
+apiVersion: mssql.sql.crossplane.io/v1alpha1
+kind: Query
+metadata:
+  name: example-query-nice-pro
+spec:
+  deletionPolicy: Orphan
+  forProvider:
+    databaseRef:
+      name: example-db
+    query: |
+      EXEC SelectFromTableProcedure;
+
+

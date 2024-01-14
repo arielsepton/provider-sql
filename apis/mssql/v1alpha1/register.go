@@ -82,10 +82,28 @@ var (
 	GrantGroupVersionKind = SchemeGroupVersion.WithKind(GrantKind)
 )
 
+// Exec type metadata.
+var (
+	ExecKind             = reflect.TypeOf(Exec{}).Name()
+	ExecGroupKind        = schema.GroupKind{Group: Group, Kind: ExecKind}.String()
+	ExecKindAPIVersion   = ExecKind + "." + SchemeGroupVersion.String()
+	ExecGroupVersionKind = SchemeGroupVersion.WithKind(ExecKind)
+)
+
+// Query type metadata.
+var (
+	QueryKind             = reflect.TypeOf(Query{}).Name()
+	QueryGroupKind        = schema.GroupKind{Group: Group, Kind: QueryKind}.String()
+	QueryKindAPIVersion   = QueryKind + "." + SchemeGroupVersion.String()
+	QueryGroupVersionKind = SchemeGroupVersion.WithKind(QueryKind)
+)
+
 func init() {
 	SchemeBuilder.Register(&ProviderConfig{}, &ProviderConfigList{})
 	SchemeBuilder.Register(&ProviderConfigUsage{}, &ProviderConfigUsageList{})
 	SchemeBuilder.Register(&Database{}, &DatabaseList{})
 	SchemeBuilder.Register(&User{}, &UserList{})
 	SchemeBuilder.Register(&Grant{}, &GrantList{})
+	SchemeBuilder.Register(&Exec{}, &ExecList{})
+	SchemeBuilder.Register(&Query{}, &QueryList{})
 }
