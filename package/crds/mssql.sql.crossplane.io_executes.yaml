@@ -5,7 +5,7 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: execs.mssql.sql.crossplane.io
+  name: executes.mssql.sql.crossplane.io
 spec:
   group: mssql.sql.crossplane.io
   names:
@@ -13,10 +13,10 @@ spec:
     - crossplane
     - managed
     - sql
-    kind: Exec
-    listKind: ExecList
-    plural: execs
-    singular: exec
+    kind: Execute
+    listKind: ExecuteList
+    plural: executes
+    singular: execute
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -32,7 +32,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: A Exec represents the declarative state of a MSSQL Exec.
+        description: A Execute represents the declarative state of a MSSQL Execute.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -47,7 +47,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: A ExecSpec defines the desired state of a Exec.
+            description: A ExecuteSpec defines the desired state of a Execute.
             properties:
               deletionPolicy:
                 default: Delete
@@ -59,8 +59,8 @@ spec:
                 - Delete
                 type: string
               forProvider:
-                description: ExecParameters define the desired state of a MSSQL Exec
-                  instance.
+                description: ExecuteParameters define the desired state of a MSSQL
+                  Execute instance.
                 properties:
                   database:
                     type: string
@@ -139,11 +139,12 @@ spec:
                             type: string
                         type: object
                     type: object
-                  exec:
-                    description: Exec is the Exec that will be executed
+                  execute:
+                    description: 'Execute is the Execute that will be Queried TODO
+                      (REL): check if its the syntax'
                     type: string
                 required:
-                - exec
+                - execute
                 type: object
               providerConfigRef:
                 default:
@@ -317,16 +318,22 @@ spec:
             - forProvider
             type: object
           status:
-            description: A ExecStatus represents the observed state of a Exec.
+            description: A ExecuteStatus represents the observed state of a Execute.
             properties:
               atProvider:
-                description: A ExecObservation represents the observed state of a
-                  MSSQL Exec.
+                description: A ExecuteObservation represents the observed state of
+                  a MSSQL Execute.
                 properties:
                   error:
                     type: string
                   message:
                     type: string
+                  results:
+                    items:
+                      additionalProperties:
+                        type: string
+                      type: object
+                    type: array
                 type: object
               conditions:
                 description: Conditions of the resource.

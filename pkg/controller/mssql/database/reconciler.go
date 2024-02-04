@@ -141,6 +141,7 @@ func (c *external) Observe(ctx context.Context, mg resource.Managed) (managed.Ex
 	}, nil
 }
 
+// TODO: add db that is already created
 func (c *external) Create(ctx context.Context, mg resource.Managed) (managed.ExternalCreation, error) {
 
 	cr, ok := mg.(*v1alpha1.Database)

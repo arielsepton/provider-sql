@@ -28,8 +28,8 @@ func (l *DatabaseList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this ExecList.
-func (l *ExecList) GetItems() []resource.Managed {
+// GetItems of this ExecuteList.
+func (l *ExecuteList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

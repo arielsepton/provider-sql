@@ -22,64 +22,62 @@ import (
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-// A ExecSpec defines the desired state of a Exec.
-type ExecSpec struct {
+// A ExecuteSpec defines the desired state of a Execute.
+type ExecuteSpec struct {
 	xpv1.ResourceSpec `json:",inline"`
-	ForProvider       ExecParameters `json:"forProvider"`
+	ForProvider       ExecuteParameters `json:"forProvider"`
 }
 
-// A ExecStatus represents the observed state of a Exec.
-type ExecStatus struct {
+// A ExecuteStatus represents the observed state of a Execute.
+type ExecuteStatus struct {
 	xpv1.ResourceStatus `json:",inline"`
-	AtProvider          ExecObservation `json:"atProvider,omitempty"`
-	Synced              bool            `json:"synced,omitempty"`
+	AtProvider          ExecuteObservation `json:"atProvider,omitempty"`
+	Synced              bool             `json:"synced,omitempty"`
 }
 
-// ExecParameters define the desired state of a MSSQL Exec instance.
-type ExecParameters struct {
+// ExecuteParameters define the desired state of a MSSQL Execute instance.
+type ExecuteParameters struct {
 	// +crossplane:generate:reference:type=Database
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'forProvider.database' is immutable"
 	Database *string `json:"database,omitempty"`
 	// DatabaseRef allows you to specify custom resource name of the Database
 	// to fill Database field.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'forProvider.databaseRef' is immutable"
 	DatabaseRef *xpv1.Reference `json:"databaseRef,omitempty"`
 	// DatabaseSelector allows you to use selector constraints to select a
 	// Database.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'forProvider.databaseSelector' is immutable"
 	DatabaseSelector *xpv1.Selector `json:"databaseSelector,omitempty"`
-	// Exec is the Exec that will be executed
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Field 'forProvider.query' is immutable"
-	Exec string `json:"exec"`
+	// Execute is the Execute that will be Queried
+	// TODO (REL): check if its the syntax
+	Execute string `json:"execute"`
 }
 
-// A ExecObservation represents the observed state of a MSSQL Exec.
-type ExecObservation struct {
-	Error   string `json:"error,omitempty"`
-	Message string `json:"message,omitempty"`
+// A ExecuteObservation represents the observed state of a MSSQL Execute.
+type ExecuteObservation struct {
+	Results []map[string]string `json:"results,omitempty"`
+	Error   string              `json:"error,omitempty"`
+	Message string              `json:"message,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// A Exec represents the declarative state of a MSSQL Exec.
+// A Execute represents the declarative state of a MSSQL Execute.
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,sql}
-type Exec struct {
+type Execute struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ExecSpec   `json:"spec"`
-	Status ExecStatus `json:"status,omitempty"`
+	Spec   ExecuteSpec   `json:"spec"`
+	Status ExecuteStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ExecList contains a list of Exec
-type ExecList struct {
+// ExecuteList contains a list of Execute
+type ExecuteList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Exec `json:"items"`
+	Items           []Execute `json:"items"`
 }

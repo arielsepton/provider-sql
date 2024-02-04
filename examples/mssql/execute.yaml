@@ -1,14 +1,14 @@
 apiVersion: mssql.sql.crossplane.io/v1alpha1
-kind: Exec
+kind: Execute
 metadata:
-  name: example-exec-try
+  name: executing
 spec:
   deletionPolicy: Orphan
   forProvider:
     databaseRef:
       name: example-db
-    exec: |
-      CREATE TABLE acdeerefesdxggij (
+    execute: |
+      CREATE TABLE rel (
           PersonID int,
           LastName varchar(255),
           FirstName varchar(255),

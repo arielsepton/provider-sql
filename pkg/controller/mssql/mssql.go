@@ -23,7 +23,7 @@ import (
 
 	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/config"
 	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/database"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/exec"
+	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/execute"
 	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/grant"
 	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/query"
 	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/user"
@@ -37,7 +37,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		database.Setup,
 		user.Setup,
 		grant.Setup,
-		exec.Setup,
+		execute.Setup,
 		query.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

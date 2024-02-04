@@ -85,69 +85,69 @@ func (mg *Database) SetWriteConnectionSecretToReference(r *xpv1.SecretReference)
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this Exec.
-func (mg *Exec) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this Execute.
+func (mg *Execute) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this Exec.
-func (mg *Exec) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this Execute.
+func (mg *Execute) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetProviderConfigReference of this Exec.
-func (mg *Exec) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this Execute.
+func (mg *Execute) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 /*
-GetProviderReference of this Exec.
+GetProviderReference of this Execute.
 Deprecated: Use GetProviderConfigReference.
 */
-func (mg *Exec) GetProviderReference() *xpv1.Reference {
+func (mg *Execute) GetProviderReference() *xpv1.Reference {
 	return mg.Spec.ProviderReference
 }
 
-// GetPublishConnectionDetailsTo of this Exec.
-func (mg *Exec) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this Execute.
+func (mg *Execute) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this Exec.
-func (mg *Exec) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this Execute.
+func (mg *Execute) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this Exec.
-func (mg *Exec) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this Execute.
+func (mg *Execute) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this Exec.
-func (mg *Exec) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this Execute.
+func (mg *Execute) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetProviderConfigReference of this Exec.
-func (mg *Exec) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this Execute.
+func (mg *Execute) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 /*
-SetProviderReference of this Exec.
+SetProviderReference of this Execute.
 Deprecated: Use SetProviderConfigReference.
 */
-func (mg *Exec) SetProviderReference(r *xpv1.Reference) {
+func (mg *Execute) SetProviderReference(r *xpv1.Reference) {
 	mg.Spec.ProviderReference = r
 }
 
-// SetPublishConnectionDetailsTo of this Exec.
-func (mg *Exec) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this Execute.
+func (mg *Execute) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this Exec.
-func (mg *Exec) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this Execute.
+func (mg *Execute) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 

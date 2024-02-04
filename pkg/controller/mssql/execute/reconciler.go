@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package exec
+package execute
 
 import (
 	"context"
@@ -43,24 +43,24 @@ const (
 	errNoSecretRef  = "ProviderConfig does not reference a credentials Secret"
 	errGetSecret    = "cannot get credentials Secret"
 
-	errNotQuery               = "managed resource is not a Query custom resource"
-	errSelectQuery            = "cannot select Query"
-	errCreateQuery            = "cannot create Query"
-	errDropQuery              = "error dropping Query %s"
+	errNotExecute               = "managed resource is not a Execute custom resource"
+	errSelectExecute            = "cannot select Execute"
+	errCreateExecute            = "cannot create Execute"
+	errDropExecute              = "error dropping Execute %s"
 	errDropLogin              = "error dropping login %s"
-	errCannotQueryuteQuery    = "cannot get current logins %s"
+	errCannotExecuteuteExecute    = "cannot get current logins %s"
 	errCannotKillLoginSession = "error killing session %d for login %s"
 
 	maxConcurrency = 5
 )
 
-// Setup adds a controller that reconciles Query managed resources.
+// Setup adds a controller that reconciles Execute managed resources.
 func Setup(mgr ctrl.Manager, o xpcontroller.Options) error {
-	name := managed.ControllerName(v1alpha1.QueryGroupKind)
+	name := managed.ControllerName(v1alpha1.ExecuteGroupKind)
 
 	t := resource.NewProviderConfigUsageTracker(mgr.GetClient(), &v1alpha1.ProviderConfigUsage{})
 	r := managed.NewReconciler(mgr,
-		resource.ManagedKind(v1alpha1.QueryGroupVersionKind),
+		resource.ManagedKind(v1alpha1.ExecuteGroupVersionKind),
 		managed.WithExternalConnecter(&connector{kube: mgr.GetClient(), usage: t, newClient: mssql.New}),
 		managed.WithLogger(o.Logger.WithValues("controller", name)),
 		managed.WithPollInterval(o.PollInterval),
@@ -68,7 +68,7 @@ func Setup(mgr ctrl.Manager, o xpcontroller.Options) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(name).
-		For(&v1alpha1.Query{}).
+		For(&v1alpha1.Execute{}).
 		WithOptions(controller.Options{
 			MaxConcurrentReconciles: maxConcurrency,
 		}).
@@ -82,9 +82,9 @@ type connector struct {
 }
 
 func (c *connector) Connect(ctx context.Context, mg resource.Managed) (managed.ExternalClient, error) {
-	cr, ok := mg.(*v1alpha1.Exec)
+	cr, ok := mg.(*v1alpha1.Execute)
 	if !ok {
-		return nil, errors.New(errNotQuery)
+		return nil, errors.New(errNotExecute)
 	}
 
 	if err := c.usage.Track(ctx, mg); err != nil {
@@ -123,9 +123,9 @@ type external struct {
 }
 
 func (c *external) Observe(ctx context.Context, mg resource.Managed) (managed.ExternalObservation, error) {
-	cr, ok := mg.(*v1alpha1.Exec)
+	cr, ok := mg.(*v1alpha1.Execute)
 	if !ok {
-		return managed.ExternalObservation{}, errors.New(errNotQuery)
+		return managed.ExternalObservation{}, errors.New(errNotExecute)
 	}
 
 	return managed.ExternalObservation{
@@ -135,13 +135,13 @@ func (c *external) Observe(ctx context.Context, mg resource.Managed) (managed.Ex
 }
 
 func (c *external) Create(ctx context.Context, mg resource.Managed) (managed.ExternalCreation, error) {
-	cr, ok := mg.(*v1alpha1.Exec)
+	cr, ok := mg.(*v1alpha1.Execute)
 	if !ok {
-		return managed.ExternalCreation{}, errors.New(errNotQuery)
+		return managed.ExternalCreation{}, errors.New(errNotExecute)
 	}
 
-	Query := cr.Spec.ForProvider.Exec
-	_, err := c.db.Query(ctx, xsql.Query{String: Query})
+	Execute := cr.Spec.ForProvider.Execute
+	err := c.db.Exec(ctx, xsql.Query{String: Execute})
 	if err != nil {
 		cr.Status.AtProvider.Error = err.Error()
 		cr.Status.Synced = true
@@ -152,34 +152,7 @@ func (c *external) Create(ctx context.Context, mg resource.Managed) (managed.Ext
 		return managed.ExternalCreation{}, nil
 	}
 
-	// defer rows.Close() //nolint:errcheck
-	// var results []map[string]string
-
-	// columns, err := rows.Columns()
-	// if err != nil {
-	// 	return managed.ExternalCreation{}, errors.Wrap(err, "failed to get columns")
-	// }
-
-	// for rows.Next() {
-	// 	values := make([]interface{}, len(columns))
-	// 	rawValues := make([]sql.RawBytes, len(columns))
-	// 	for i := range values {
-	// 		values[i] = &rawValues[i]
-	// 	}
-
-	// 	if err := rows.Scan(values...); err != nil {
-	// 		return managed.ExternalCreation{}, errors.Wrap(err, "failed to scan row")
-	// 	}
-
-	// 	row := make(map[string]string)
-	// 	for i, column := range columns {
-	// 		row[column] = string(rawValues[i])
-	// 	}
-
-	// 	results = append(results, row)
-	// }
-
-	cr.Status.AtProvider.Message = "SQL statement Queried successfully"
+	cr.Status.AtProvider.Message = "SQL statement Executed successfully"
 	cr.Status.Synced = true
 	if err := c.kube.Status().Update(ctx, cr); err != nil {
 		return managed.ExternalCreation{}, errors.Wrap(err, "errFailedToSetStatusCode")
